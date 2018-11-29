@@ -3,7 +3,8 @@
     <header>
       <input class='title' type="text" placeholder="请输入标题" v-model='article.title'>
       <div class='actions'>
-        <el-button type="text" size='mini' @click='saveDraft'>保存草稿</el-button>
+        <el-button type="text" size='mini' @click='saveDraft' :disabled='!article.title && !article.content'>保存草稿</el-button>
+        <el-button type="primary" plain size='mini' @click='$router.push({path: "publish"})' :disabled='!article.title && !article.content'>去发布</el-button>
       </div>
     </header>
     <mavon-editor class='editor' v-model="article.content"/>
@@ -18,7 +19,22 @@
       }
     },
     mounted () {
-      this.article = this.$db.get('article').value()
+      this.article = Object.assign({}, this.$db.get('article').value())
+    },
+    beforeRouteLeave (to, from, next) {
+      this.$electron.remote.dialog.showMessageBox({
+        type: 'question',
+        buttons: ['离开', '取消'],
+        title: '确定离开？',
+        message: '确定离开？',
+        detail: '还未保存，离开该页面后修改的内容将丢失'
+      }, (res) => {
+        if (res === 0) {
+          next()
+        } else {
+          next(false)
+        }
+      })
     },
     methods: {
       saveDraft () {

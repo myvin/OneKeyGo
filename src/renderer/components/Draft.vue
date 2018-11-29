@@ -29,7 +29,7 @@
       }
     },
     mounted () {
-      this.article = this.$db.get('article').value()
+      this.article = Object.assign({}, this.$db.get('article').value())
     }
   }
 </script>
