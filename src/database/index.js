@@ -12,7 +12,10 @@ db.defaults({
       userId: ''
     }
   },
-  article: ''
+  article: {
+    title: '',
+    content: ''
+  }
 }).write()
 
 export default db

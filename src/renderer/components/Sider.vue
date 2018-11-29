@@ -3,7 +3,7 @@
     <el-menu
       background-color='#404040'
       text-color='#fff'
-      default-active="/edit"
+      :default-active="$route.path"
       router
     >
       <template v-for="(item, index) in menu">

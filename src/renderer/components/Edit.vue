@@ -1,12 +1,12 @@
 <template>
   <div id="publish">
     <header>
-      <input class='title' type="text" placeholder="请输入标题" v-model='title'>
+      <input class='title' type="text" placeholder="请输入标题" v-model='article.title'>
       <div class='actions'>
-        <el-button type="primary" plain size='mini' @click='saveDraft'>保存草稿</el-button>
+        <el-button type="text" size='mini' @click='saveDraft'>保存草稿</el-button>
       </div>
     </header>
-    <mavon-editor class='editor' v-model="content"/>
+    <mavon-editor class='editor' v-model="article.content"/>
   </div>
 </template>
 
@@ -14,15 +14,17 @@
   export default {
     data () {
       return {
-        title: '',
-        content: ''
+        article: {}
       }
+    },
+    mounted () {
+      this.article = this.$db.get('article').value()
     },
     methods: {
       saveDraft () {
         const article = {
-          title: this.title,
-          content: this.content
+          title: this.article.title,
+          content: this.article.content
         }
         this.$db.set('article', article).write()
         let notification = new this.$electron.remote.Notification({
