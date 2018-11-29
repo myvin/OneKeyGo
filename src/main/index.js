@@ -94,8 +94,10 @@ let createAboutWindow = () => {
 let createWindow = () => {
   mainWindow = new BrowserWindow({
     // useContentSize: true,
-    height: 600,
-    width: 900,
+    height: 700,
+    width: 1100,
+    minHeight: 700,
+    minWidth: 1100,
     show: true,
     frame: true,
     // center: true,

@@ -14,6 +14,5 @@
   section {
     flex: 1;
     overflow: scroll;
-    padding: 30px;
   }
 </style>

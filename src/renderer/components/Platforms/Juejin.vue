@@ -1,7 +1,7 @@
 <template>
   <div id="juejin">
     <div class='formtitle'>{{$route.meta.label}}平台设置</div>
-      <el-form ref="refName" :model="form" :rules='rules' label-width="6em" size='small'>
+      <el-form label-position='left' ref="refName" :model="form" :rules='rules' label-width="5em" size='small'>
         <el-form-item label="账号" prop='account'>
           <el-input placeholder='请输入手机号或邮箱' v-model="form.account"></el-input>
         </el-form-item>
@@ -144,7 +144,11 @@
 </script>
 
 <style lang='scss' scoped>
-  .tip {
-    font-size: 12px;
+  #juejin {
+    padding: 30px;
+    box-sizing: border-box;
+    .tip {
+      font-size: 12px;
+    }
   }
 </style>
