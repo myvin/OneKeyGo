@@ -103,7 +103,8 @@ let createWindow = () => {
     // center: true,
     fullscreenable: false,
     // titleBarStyle: 'hidden',
-    resizable: true,
+    resizable: false,
+    maximizable: false,
     vibrancy: 'ultra-dark',
     transparent: false,
     webPreferences: {
