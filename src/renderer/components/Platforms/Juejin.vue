@@ -1,44 +1,43 @@
 <template>
   <div id="juejin">
     <div class='formtitle'>{{$route.meta.label}}平台设置</div>
-      <el-form label-position='left' ref="refName" :model="form" :rules='rules' label-width="5em" size='small'>
-        <el-form-item label="账号" prop='account'>
-          <el-input placeholder='请输入手机号或邮箱' v-model="form.account"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop='password'>
-          <el-input placeholder='请输入密码' v-model="form.password"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <template slot='label'>clientId</template>
-          <template>
-            <el-input placeholder='clientId' :disabled='true' v-model='juejin.clientId'></el-input>
-            <i class='el-icon-info tip'></i> <span class='tip'>调用 API 必须的参数一</span>
-          </template>
-        </el-form-item>
-        <el-form-item>
-          <template slot='label'>token</template>
-          <template>
-            <el-input placeholder='token' :disabled='true' v-model='juejin.token'></el-input>
-            <i class='el-icon-info tip'></i> <span class='tip'>调用 API 必须的参数二</span>
-          </template>
-        </el-form-item>
-        <el-form-item>
-          <template slot='label'>userId</template>
-          <template>
-            <el-input placeholder='userId' :disabled='true' v-model='juejin.userId'></el-input>
-            <i class='el-icon-info tip'></i> <span class='tip'>调用 API 必须的参数三</span>
-          </template>
-        </el-form-item>
-        <el-form-item>
-          <el-button plain size='small' type="primary" @click="validate('refName')" icon='el-icon-question'>验证账号</el-button>
-          <el-button plain size='small' type="success" @click="create('refName')" icon='el-icon-circle-check'>创建/更新账号信息</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button plain size='small' type='warning' @click="resetForm('refName')" icon='el-icon-circle-close'>重置表单</el-button>
-          <el-button plain size='small' type='danger' @click="remove" icon='el-icon-delete'>删除本地账号信息</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-form label-position='left' ref="refName" :model="form" :rules='rules' label-width="5em" size='small'>
+      <el-form-item label="账号" prop='account'>
+        <el-input placeholder='请输入手机号或邮箱' v-model="form.account"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop='password'>
+        <el-input placeholder='请输入密码' v-model="form.password"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <template slot='label'>clientId</template>
+        <template>
+          <el-input placeholder='clientId' :disabled='true' v-model='juejin.clientId'></el-input>
+          <i class='el-icon-info tip'></i> <span class='tip'>调用 API 必须的参数一</span>
+        </template>
+      </el-form-item>
+      <el-form-item>
+        <template slot='label'>token</template>
+        <template>
+          <el-input placeholder='token' :disabled='true' v-model='juejin.token'></el-input>
+          <i class='el-icon-info tip'></i> <span class='tip'>调用 API 必须的参数二</span>
+        </template>
+      </el-form-item>
+      <el-form-item>
+        <template slot='label'>userId</template>
+        <template>
+          <el-input placeholder='userId' :disabled='true' v-model='juejin.userId'></el-input>
+          <i class='el-icon-info tip'></i> <span class='tip'>调用 API 必须的参数三</span>
+        </template>
+      </el-form-item>
+      <el-form-item>
+        <el-button plain size='small' type="primary" @click="validate('refName')" icon='el-icon-question'>验证账号</el-button>
+        <el-button plain size='small' type="success" @click="create('refName')" icon='el-icon-circle-check'>创建/更新账号信息</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button plain size='small' type='warning' @click="resetForm('refName')" icon='el-icon-circle-close'>重置表单</el-button>
+        <el-button plain size='small' type='danger' @click="remove" icon='el-icon-delete'>删除本地账号信息</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

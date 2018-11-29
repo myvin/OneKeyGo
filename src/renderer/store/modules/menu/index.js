@@ -20,6 +20,15 @@ const menuState = {
       },
       component: require('@/components/Draft').default
     },
+    {
+      name: 'Publish',
+      path: '/publish',
+      meta: {
+        icon: 'el-icon-upload',
+        label: '一键发布'
+      },
+      component: require('@/components/Publish').default
+    },
     platforms,
     {
       name: 'Setting',
