@@ -37,7 +37,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   #about {
     padding: 20px 20px 30px;
   }

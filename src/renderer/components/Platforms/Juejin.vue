@@ -85,22 +85,31 @@
             this.juejin = juejin
             this.$db.set('platforms.juejin', juejin).write()
           }
-          this.$notify.success({
+          let notification = new this.$electron.remote.Notification({
             title: create ? '创建结果' : '验证结果',
-            message: create ? '账号信息创建/更新成功！' : '账号信息正确'
+            body: create ? '账号信息创建/更新成功！' : '账号信息正确'
           })
+          notification.show()
+          notification.onclick = () => {
+            notification.close()
+          }
         } catch (err) {
+          let notification
           const status = err.response.status
           if (status === 401) {
-            this.$notify.error({
-              title: '提示',
-              message: '密码错误，请重新填写'
+            notification = new this.$electron.remote.Notification({
+              title: '信息有误',
+              body: '密码错误，请重新填写'
             })
           } else if (status === 404) {
-            this.$notify.error({
-              title: '提示',
-              message: '账号不存在，请重新填写'
+            notification = new this.$electron.remote.Notification({
+              title: '信息有误',
+              body: '账号不存在，请重新填写'
             })
+          }
+          notification.show()
+          notification.onclick = () => {
+            notification.close()
           }
         }
       },
@@ -109,6 +118,14 @@
           if (valid) {
             this.login()
           } else {
+            let notification = new this.$electron.remote.Notification({
+              title: '提示',
+              body: '请填写必填选项'
+            })
+            notification.show()
+            notification.onclick = () => {
+              notification.close()
+            }
             return false
           }
         })
@@ -118,6 +135,14 @@
           if (valid) {
             this.login('create')
           } else {
+            let notification = new this.$electron.remote.Notification({
+              title: '提示',
+              body: '请填写必填选项'
+            })
+            notification.show()
+            notification.onclick = () => {
+              notification.close()
+            }
             return false
           }
         })
@@ -133,10 +158,14 @@
         }
         this.juejin = juejin
         this.$db.set('platforms.juejin', juejin).write()
-        this.$notify.success({
-          title: '提示',
-          message: '本地账号信息删除完成'
+        let notification = new this.$electron.remote.Notification({
+          title: '删除提示',
+          body: '本地账号信息删除完成'
         })
+        notification.show()
+        notification.onclick = () => {
+          notification.close()
+        }
       }
     }
   }
