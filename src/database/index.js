@@ -11,7 +11,8 @@ db.defaults({
       clientId: '',
       userId: ''
     }
-  }
+  },
+  article: ''
 }).write()
 
 export default db
