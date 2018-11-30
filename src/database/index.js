@@ -6,11 +6,7 @@ const db = low(adapter)
 
 db.defaults({
   platforms: {
-    juejin: {
-      token: '',
-      clientId: '',
-      userId: ''
-    }
+    juejin: {}
   },
   article: {
     title: '',

@@ -59,6 +59,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.11",
     "lowdb": "^1.0.0",
     "mavon-editor": "^2.6.17",
     "vue": "^2.5.16",

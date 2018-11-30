@@ -151,11 +151,7 @@
         this.$refs[formName].resetFields()
       },
       remove () {
-        const juejin = {
-          token: '',
-          userId: '',
-          clientId: ''
-        }
+        const juejin = {}
         this.juejin = juejin
         this.$db.set('platforms.juejin', juejin).write()
         let notification = new this.$electron.remote.Notification({
