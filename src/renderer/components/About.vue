@@ -1,7 +1,7 @@
 <template>
   <div id='about'>
     <div class="intro">
-      <img class='logo' src="/static/assets/logo.png" alt="logo">
+      <img class='logo' src="static/assets/logo.png" alt="logo">
       <div>
         <div class="name">OneKeyGo</div>
         <ul class="infos">
