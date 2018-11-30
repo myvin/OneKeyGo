@@ -1,9 +1,15 @@
 import menuModule from '@/store/modules/menu'
+import path from 'path'
+import { remote, app } from 'electron'
 
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 
-const adapter = new FileSync('./db.json')
+// resolve permission denied error
+const APP = process.type === 'renderer' ? remote.app : app
+const STORE_PATH = APP.getPath('userData')
+
+const adapter = new FileSync(path.join(STORE_PATH, '/db.json'))
 const db = low(adapter)
 
 const items = menuModule.state.items
