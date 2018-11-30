@@ -17,19 +17,21 @@
     </ul>
     <el-row style='margin-top: 20px;'>
       <el-button type='primary' @click='checkAllAccounts(true)'>一键发布</el-button>
-      <el-button type='primary' @click='setDefaultSettings'>保存为默认设置</el-button>
+      <el-button type='primary' plain @click='setDefaultSettings'>保存为默认设置</el-button>
     </el-row>
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
+  import { postPublishArticle as juejinPublish } from '../../utils/juejinPublish'
   import _ from 'lodash'
 
   export default {
     data () {
       return {
         platforms: {},
+        article: {},
         publishSettings: {},
         children: []
       }
@@ -40,14 +42,15 @@
       })
     },
     mounted () {
-      this.getPlatforms()
+      this.getPlatformsAndArticle()
       this.getSettingsPublish()
       this.getChildren()
       this.checkAllAccounts()
     },
     methods: {
-      getPlatforms () {
+      getPlatformsAndArticle () {
         this.platforms = this.$db.get('platforms').value()
+        this.article = this.$db.get('article').value()
       },
       getSettingsPublish () {
         this.publishSettings = JSON.parse(JSON.stringify(this.$db.getState().settings.publish))
@@ -81,11 +84,13 @@
         }
       },
       checkAllAccounts (publish) {
+        let canPublish = true
         let children = this.children
         for (let i = 0, len = children.length; i < len; i++) {
           if (_.isEmpty(this.platforms[children[i].name.toLowerCase()])) {
             children[i].meta.hasAccount = false
             if (publish && this.publishSettings[children[i].name.toLowerCase()]) {
+              canPublish = false
               let notification = new this.$electron.remote.Notification({
                 title: '提示',
                 body: '请先设置要发布的平台账号！'
@@ -100,6 +105,9 @@
           }
         }
         this.children = children
+        if (publish && canPublish) {
+          this.juejinPublish()
+        }
       },
       setDefaultSettings (to, from, next) {
         this.$db.set('settings.publish', this.publishSettings).write()
@@ -110,6 +118,57 @@
         notification.show()
         notification.onclick = () => {
           notification.close()
+        }
+      },
+      async juejinPublish () {
+        const juejin = this.platforms.juejin
+        console.log('juejin params: ', juejin)
+        try {
+          const data = await juejinPublish({
+            uid: juejin.userId,
+            device_id: juejin.clientId,
+            token: juejin.token,
+            src: 'web',
+            content: '',
+            title: this.article.title,
+            type: 'markdown',
+            isTitleImageFullscreen: 0,
+            html: '',
+            markdown: '',
+            screenshot: '',
+            tags: '',
+            category: '5562b428e4b00c57d9b94b9d'
+          }, {
+            uid: juejin.userId,
+            device_id: juejin.clientId,
+            token: juejin.token,
+            src: 'web',
+            content: '',
+            title: this.article.title,
+            isTitleImageFullscreen: 0,
+            html: this.article.content && this.article.content.html,
+            markdown: this.article.content && this.article.content.md,
+            screenshot: '',
+            tags: '',
+            category: '5562b428e4b00c57d9b94b9d'
+          }, {
+            uid: juejin.userId,
+            device_id: juejin.clientId,
+            token: juejin.token,
+            src: 'web'
+          })
+          if (data.s !== 1) {
+            const notification = new this.$electron.remote.Notification({
+              title: '失败',
+              body: JSON.stringify(data.m)
+            })
+            notification.show()
+            notification.onclick = () => {
+              notification.close()
+            }
+          }
+        } catch (err) {
+          console.error('err:', err)
         }
       }
     }

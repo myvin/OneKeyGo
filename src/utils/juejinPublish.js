@@ -1,4 +1,5 @@
 import axios from 'axios'
+import querystring from 'querystring'
 const loginApiUrl = 'https://juejin.im/auth/type/phoneNumber'
 const draftStorageApiUrl = 'https://post-storage-api-ms.juejin.im/v1/draftStorage'
 const updateDraftApiUrl = 'https://post-storage-api-ms.juejin.im/v1/updateDraft'
@@ -9,22 +10,35 @@ export async function login (params) {
   return data
 }
 
-// 获取 postId
+// publish flow: draftStorage -> updateDraft -> postPublishArticle
+// get postId of the article
 export async function draftStorage (params) {
-  const { data } = await axios.post(draftStorageApiUrl, params)
+  const { data } = await axios.post(draftStorageApiUrl, querystring.stringify(params), {
+    'headers': {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
   return data
 }
 
-// 保存草稿
+// save the draft
 export async function updateDraft (params) {
-  const { data } = await axios.post(updateDraftApiUrl, params)
-  return data
+  await axios.post(updateDraftApiUrl, querystring.stringify(params), {
+    'headers': {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }
 
-// 发布文章
-export async function postPublishArticle (params) {
-  const { d } = await draftStorage()
+// publish the article
+export async function postPublishArticle (draft, update, publish) {
+  const { d } = await draftStorage(draft)
   const postId = d[0]
-  const { data } = await axios.post(postPublishApiUrl, Object.assign({}, params, { postId }))
+  await updateDraft(Object.assign({}, update, { postId }))
+  const { data } = await axios.post(postPublishApiUrl, querystring.stringify(Object.assign({}, publish, { postId })), {
+    'headers': {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
   return data
 }
