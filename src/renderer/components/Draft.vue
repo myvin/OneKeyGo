@@ -6,9 +6,9 @@
         <span>{{article.title ? article.title : '无标题'}}</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click='$router.push({path: "edit"})'>编辑</el-button>
       </div>
-      <div>{{article.content.length >= 80 ? article.content.substr(0, 80) + '...' : (!article.content.length ? '无内容' : article.content)}}</div>
+      <div>{{getAbstract()}}</div>
     </el-card>
-    <el-alert v-if='!article.title && !article.content'
+    <el-alert v-if='!article.title && !article.content.html'
       title="草稿箱空空如也"
       type="info"
       center
@@ -24,12 +24,21 @@
       return {
         article: {
           title: '',
-          content: ''
+          content: {
+            md: '',
+            html: ''
+          }
         }
       }
     },
     mounted () {
       this.article = Object.assign({}, this.$db.get('article').value())
+    },
+    methods: {
+      getAbstract () {
+        let abstract = this.article.content.html.replace(/<br\/>/g, '').replace(/<[^>]+>/g, '').replace(/&#34;/g, '"')
+        return abstract.length >= 80 ? abstract.substr(0, 80) + '...' : (!abstract.length ? '无内容' : abstract)
+      }
     }
   }
 </script>

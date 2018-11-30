@@ -7,7 +7,7 @@
         <el-button type="primary" plain size='mini' @click='$router.push({path: "publish"})' :disabled='!article.title && !article.content'>去发布</el-button>
       </div>
     </header>
-    <mavon-editor class='editor' v-model="article.content"/>
+    <mavon-editor ref='editor' @change='inputChange' :toolbarsFlag='false' class='editor' v-model="article.content.md"/>
   </div>
 </template>
 
@@ -15,7 +15,9 @@
   export default {
     data () {
       return {
-        article: {}
+        article: {
+          content: {}
+        }
       }
     },
     mounted () {
@@ -37,6 +39,12 @@
       })
     },
     methods: {
+      inputChange (md, html) {
+        this.article.content = {
+          md,
+          html
+        }
+      },
       saveDraft () {
         const article = {
           title: this.article.title,
