@@ -5,7 +5,7 @@
       <li v-for="(child, index) in children" :key='index'>
         <span style='width: 6em;display: inline-block;'>{{child.meta.label}}</span>
         <el-switch
-          v-model="child.meta.switch">
+          v-model="publishSettings[child.name.toLowerCase()]">
         </el-switch>
         <el-alert style='margin-top: 20px;'
           :title="getInfo(child).title"
@@ -16,7 +16,8 @@
       </li>
     </ul>
     <el-row style='margin-top: 20px;'>
-      <el-button type='primary' @click='checkAllAccounts'>一键发布</el-button>
+      <el-button type='primary' @click='checkAllAccounts(true)'>一键发布</el-button>
+      <el-button type='primary' @click='setDefaultSettings'>保存为默认设置</el-button>
     </el-row>
   </div>
 </template>
@@ -29,6 +30,7 @@
     data () {
       return {
         platforms: {},
+        publishSettings: {},
         children: []
       }
     },
@@ -39,12 +41,16 @@
     },
     mounted () {
       this.getPlatforms()
+      this.getSettingsPublish()
       this.getChildren()
       this.checkAllAccounts()
     },
     methods: {
       getPlatforms () {
         this.platforms = this.$db.get('platforms').value()
+      },
+      getSettingsPublish () {
+        this.publishSettings = JSON.parse(JSON.stringify(this.$db.getState().settings.publish))
       },
       getChildren () {
         let menu = JSON.parse(JSON.stringify(this.menu))
@@ -74,17 +80,37 @@
           type
         }
       },
-      checkAllAccounts () {
+      checkAllAccounts (publish) {
         let children = this.children
         for (let i = 0, len = children.length; i < len; i++) {
           if (_.isEmpty(this.platforms[children[i].name.toLowerCase()])) {
             children[i].meta.hasAccount = false
+            if (publish && this.publishSettings[children[i].name.toLowerCase()]) {
+              let notification = new this.$electron.remote.Notification({
+                title: '提示',
+                body: '请先设置要发布的平台账号！'
+              })
+              notification.show()
+              notification.onclick = () => {
+                notification.close()
+              }
+            }
           } else {
             children[i].meta.hasAccount = true
-            console.error(true)
           }
         }
         this.children = children
+      },
+      setDefaultSettings (to, from, next) {
+        this.$db.set('settings.publish', this.publishSettings).write()
+        let notification = new this.$electron.remote.Notification({
+          title: '提示',
+          body: '保存成功！'
+        })
+        notification.show()
+        notification.onclick = () => {
+          notification.close()
+        }
       }
     }
   }
