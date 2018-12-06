@@ -71,6 +71,12 @@
         this.juejin = this.$db.getState().platforms.juejin
       },
       async login (create) {
+        let loading = this.$loading({
+          lock: true,
+          text: '努力加载中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
         try {
           const d = await login({
             phoneNumber: this.form.account,
@@ -112,6 +118,7 @@
             notification.close()
           }
         }
+        loading.close()
       },
       validate (formName) {
         this.$refs[formName].validate((valid) => {
