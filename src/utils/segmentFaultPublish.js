@@ -1,6 +1,5 @@
 import axios from 'axios'
 import request from 'request-promise'
-import querystring from 'querystring'
 import jsdom from 'jsdom'
 import { remote } from 'electron'
 
@@ -38,12 +37,9 @@ export function login (params, success, catchErr) {
           contentType: 'application/x-www-form-urlencoded',
           cookie: `PHPSESSID=${cookies[0].value}`
         },
-        postData: {
-          mimeType: 'application/x-www-form-urlencoded',
-          body: querystring.stringify(params)
-        }
+        form: params
       }).then(res => {
-        success && success(res)
+        success && success(res, token, cookies[0].value)
       }).catch(e => {
         catchErr && catchErr(e)
       })
