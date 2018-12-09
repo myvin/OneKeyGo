@@ -30,12 +30,16 @@
         </template>
       </el-form-item>
       <el-form-item>
-        <el-button plain size='small' type="primary" @click="validate('refName')" icon='el-icon-question'>验证账号</el-button>
-        <el-button plain size='small' type="success" @click="create('refName')" icon='el-icon-circle-check'>创建/更新账号信息</el-button>
+        <el-button-group>
+          <el-button size='small' type="primary" @click="validate('refName')" icon='el-icon-question'>验证账号</el-button>
+          <el-button size='small' type="success" @click="create('refName')" icon='el-icon-circle-check'>创建/更新账号信息</el-button>
+        </el-button-group>
       </el-form-item>
       <el-form-item>
-        <el-button plain size='small' type='warning' @click="resetForm('refName')" icon='el-icon-circle-close'>重置表单</el-button>
-        <el-button plain size='small' type='danger' @click="remove" icon='el-icon-delete'>删除本地账号信息</el-button>
+        <el-button-group>
+          <el-button size='small' type='warning' @click="resetForm('refName')" icon='el-icon-circle-close'>重置表单</el-button>
+          <el-button size='small' type='danger' @click="remove" icon='el-icon-delete'>删除本地账号信息</el-button>
+        </el-button-group>
       </el-form-item>
     </el-form>
   </div>
