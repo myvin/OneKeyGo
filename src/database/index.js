@@ -24,7 +24,7 @@ for (let i = 0, len = items.length; i < len; i++) {
 }
 
 platforms.forEach(item => {
-  publishSettings[item.name.toLowerCase()] = true
+  publishSettings[item.name] = true
 })
 
 db.defaults({

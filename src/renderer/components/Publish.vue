@@ -5,7 +5,7 @@
       <li v-for="(child, index) in children" :key='index'>
         <span style='width: 6em;display: inline-block;'>{{child.meta.label}}</span>
         <el-switch
-          v-model="publishSettings[child.name.toLowerCase()]">
+          v-model="publishSettings[child.name]">
         </el-switch>
         <el-alert style='margin-top: 20px;'
           :title="getInfo(child).title"
@@ -87,9 +87,9 @@
         let canPublish = true
         let children = this.children
         for (let i = 0, len = children.length; i < len; i++) {
-          if (_.isEmpty(this.platforms[children[i].name.toLowerCase()])) {
+          if (_.isEmpty(this.platforms[children[i].name])) {
             children[i].meta.hasAccount = false
-            if (publish && this.publishSettings[children[i].name.toLowerCase()]) {
+            if (publish && this.publishSettings[children[i].name]) {
               canPublish = false
               let notification = new this.$electron.remote.Notification({
                 title: '提示',

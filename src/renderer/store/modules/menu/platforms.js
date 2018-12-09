@@ -13,7 +13,7 @@ export default {
   },
   children: [
     {
-      name: 'Juejin',
+      name: 'juejin',
       path: '/platforms/juejin',
       meta: {
         icon: 'el-icon-edit-outline',
@@ -22,7 +22,7 @@ export default {
       component: Juejin
     },
     {
-      name: 'Jianshu',
+      name: 'jianshu',
       path: '/platforms/jianshu',
       meta: {
         icon: 'el-icon-edit-outline',
@@ -31,7 +31,7 @@ export default {
       component: Jianshu
     },
     {
-      name: 'SegmentFault',
+      name: 'segmentFault',
       path: '/platforms/segmentFault',
       meta: {
         icon: 'el-icon-edit-outline',
@@ -40,7 +40,7 @@ export default {
       component: SegmentFault
     },
     {
-      name: 'Bokeyuan',
+      name: 'bokeyuan',
       path: '/platforms/bokeyuan',
       meta: {
         icon: 'el-icon-edit-outline',
@@ -49,7 +49,7 @@ export default {
       component: Bokeyuan
     },
     {
-      name: 'Kaiyuanzhongguo',
+      name: 'kaiyuanzhongguo',
       path: '/platforms/kaiyuanzhongguo',
       meta: {
         icon: 'el-icon-edit-outline',
@@ -58,7 +58,7 @@ export default {
       component: Kaiyuanzhongguo
     },
     {
-      name: 'Shaoshupai',
+      name: 'shaoshupai',
       path: '/platforms/shaoshupai',
       meta: {
         icon: 'el-icon-edit-outline',
