@@ -29,11 +29,14 @@ platforms.forEach(item => {
 
 db.defaults({
   platforms: {
-    juejin: {}
+    juejin: {},
+    segmentFault: {}
   },
   article: {
-    title: '',
-    content: ''
+    content: {
+      html: '',
+      md: ''
+    }
   },
   settings: {
     // 默认开启
