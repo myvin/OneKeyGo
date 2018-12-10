@@ -111,3 +111,16 @@ export async function add ({
   })
   return data
 }
+
+export async function search (q) {
+  const data = await request({
+    method: 'GET',
+    url: `${segmentfaultUrl}/api/tags/search?_=${segmentFault.token}&q=${q}`,
+    headers: {
+      Referer: `${segmentfaultUrl}/write`,
+      cookie: `PHPSESSID=${segmentFault.PHPSESSID}`
+    },
+    json: true
+  })
+  return data
+}
