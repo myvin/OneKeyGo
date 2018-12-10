@@ -2,6 +2,9 @@ import axios from 'axios'
 import request from 'request-promise'
 import jsdom from 'jsdom'
 import { remote } from 'electron'
+import db from '../database/index'
+
+const segmentFault = Object.assign({}, db.getState().platforms.segmentFault)
 
 const { JSDOM } = jsdom
 
@@ -45,4 +48,66 @@ export function login (params, success, catchErr) {
       })
     })
   })
+}
+
+export async function save ({
+  title,
+  text
+}) {
+  const body = {
+    do: 'saveArticle',
+    type: 1,
+    title,
+    text,
+    weibo: 0,
+    blogId: 0,
+    id: '',
+    articleId: '',
+    'tags[]': '',
+    url: ''
+  }
+  const data = await request({
+    method: 'POST',
+    url: `${segmentfaultUrl}/api/article/draft/save?_=${segmentFault.token}`,
+    headers: {
+      Referer: `${segmentfaultUrl}/write`,
+      contentType: 'application/x-www-form-urlencoded',
+      cookie: `PHPSESSID=${segmentFault.PHPSESSID}`
+    },
+    form: body,
+    json: true
+  })
+  return data
+}
+
+export async function add ({
+  title,
+  text,
+  draftId
+}) {
+  const body = {
+    title,
+    text,
+    id: '',
+    blogId: 0,
+    'tags[]': '',
+    weibo: 0,
+    license: 0,
+    draftId,
+    created: '',
+    type: 1,
+    url: ''
+  }
+  const data = await request({
+    method: 'POST',
+    url: `${segmentfaultUrl}/api/articles/add?_=${segmentFault.token}`,
+    headers: {
+      Referer: `${segmentfaultUrl}/write`,
+      contentType: 'application/x-www-form-urlencoded',
+      cookie: `PHPSESSID=${segmentFault.PHPSESSID}`
+    },
+    form: body,
+    json: true
+  })
+  return data
 }
