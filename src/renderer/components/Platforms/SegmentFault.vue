@@ -16,6 +16,30 @@
           <i class='el-icon-info tip'></i> <span class='tip'>登录网页版后，随便打开一个页面，查看页面源码，找到 w.SF.token function，执行该 function 后返回的字符串作为 token</span>
         </template>
       </el-form-item>
+      <el-form-item prop='tags'>
+        <template slot='label'>标签</template>
+        <template>
+          <el-select style='width: 100%;'
+            :disabled='disabled'
+            v-model="segmentFault.tags"
+            multiple
+            :multiple-limit='5'
+            filterable
+            remote
+            placeholder="文章标签，最多 5 个"
+            no-data-text='没有该 tag'
+            :remote-method="search"
+            :loading="loading">
+            <el-option
+              v-for="item in searchResults"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name">
+            </el-option>
+          </el-select>
+          <i class='el-icon-info tip'></i> <span class='tip'>发布文章时必填项；需先填写账号信息方可搜索。</span>
+        </template>
+      </el-form-item>
       <el-form-item>
         <el-button-group>
           <el-button size='small' type="primary" @click="save('form')" icon='el-icon-success'>确定</el-button>
@@ -27,6 +51,8 @@
 </template>
 
 <script>
+  import { search } from '../../../utils/segmentFaultPublish'
+
   export default {
     data () {
       return {
@@ -37,8 +63,23 @@
           ],
           token: [
             { required: true, message: '请输入 token', trigger: 'blur' }
+          ],
+          tags: [
+            { type: 'array', required: true, message: '至少填写一个标签', trigger: 'blur' }
           ]
+        },
+        loading: false,
+        searchResults: []
+      }
+    },
+    computed: {
+      disabled () {
+        let PHPSESSID = this.segmentFault.PHPSESSID
+        let token = this.segmentFault.token
+        if (!PHPSESSID || !PHPSESSID.replace(/\s+/g, '') || !token || !token.replace(/\s+/g, '')) {
+          return true
         }
+        return false
       }
     },
     mounted () {
@@ -47,7 +88,6 @@
     methods: {
       readDb () {
         this.segmentFault = Object.assign({}, this.$db.getState().platforms.segmentFault)
-        console.log('segmentFault: ', this.$db.getState().platforms.segmentFault.token)
       },
       save (formName) {
         this.$refs[formName].validate((valid) => {
@@ -81,6 +121,36 @@
         notification.show()
         notification.onclick = () => {
           notification.close()
+        }
+      },
+      async search (query) {
+        if (query !== '') {
+          this.loading = true
+          try {
+            const data = await search({
+              token: this.segmentFault.token,
+              PHPSESSID: this.segmentFault.PHPSESSID,
+              q: query
+            })
+            if (data.status === 0) {
+              this.loading = false
+              this.searchResults = data.data
+            } else {
+              this.notification({
+                title: '搜索标签',
+                body: '搜索标签发生错误'
+              })
+            }
+          } catch (err) {
+            if (err.statusCode === 404) {
+              this.notification({
+                title: '提示',
+                body: '请核对账号信息是否正确!'
+              })
+            }
+          }
+        } else {
+          this.searchResults = []
         }
       }
     }

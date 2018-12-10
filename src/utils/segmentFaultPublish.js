@@ -112,13 +112,17 @@ export async function add ({
   return data
 }
 
-export async function search (q) {
+export async function search ({
+  token,
+  PHPSESSID,
+  q
+}) {
   const data = await request({
     method: 'GET',
-    url: `${segmentfaultUrl}/api/tags/search?_=${segmentFault.token}&q=${q}`,
+    url: `${segmentfaultUrl}/api/tags/search?_=${token}&q=${q}`,
     headers: {
       Referer: `${segmentfaultUrl}/write`,
-      cookie: `PHPSESSID=${segmentFault.PHPSESSID}`
+      cookie: `PHPSESSID=${PHPSESSID}`
     },
     json: true
   })

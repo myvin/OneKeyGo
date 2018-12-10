@@ -1,6 +1,8 @@
-const menuModule = require('@/store/modules/menu')
 import path from 'path'
 import { remote, app } from 'electron'
+
+const _ = require('lodash')
+const menuModule = require('@/store/modules/menu')
 
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
@@ -43,5 +45,17 @@ db.defaults({
     publish: publishSettings
   }
 }).write()
+
+if (_.isUndefined(db.read().get('platforms.segmentFault.tags').value())) {
+  db.set('platforms.segmentFault.tags', []).write()
+}
+
+if (_.isEmpty(db.read().get('article.content.html').value())) {
+  db.set('article.content.html', '').write()
+}
+
+if (_.isEmpty(db.read().get('article.content.md').value())) {
+  db.set('article.content.md', '').write()
+}
 
 export default db
