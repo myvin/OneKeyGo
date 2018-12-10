@@ -1,4 +1,4 @@
-import menuModule from '@/store/modules/menu'
+const menuModule = require('@/store/modules/menu')
 import path from 'path'
 import { remote, app } from 'electron'
 
@@ -12,7 +12,7 @@ const STORE_PATH = APP.getPath('userData')
 const adapter = new FileSync(path.join(STORE_PATH, '/db.json'))
 const db = low(adapter)
 
-const items = menuModule.state.items
+const items = (menuModule.state || []).items || []
 let publishSettings = {}
 let platforms = []
 
