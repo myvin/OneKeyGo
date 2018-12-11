@@ -31,13 +31,7 @@
       </el-form-item>
       <el-form-item>
         <el-button-group>
-          <el-button size='small' type="primary" @click="validate('refName')" icon='el-icon-question'>验证账号</el-button>
-          <el-button size='small' type="success" @click="create('refName')" icon='el-icon-circle-check'>创建/更新账号信息</el-button>
-        </el-button-group>
-      </el-form-item>
-      <el-form-item>
-        <el-button-group>
-          <el-button size='small' type='warning' @click="resetForm('refName')" icon='el-icon-circle-close'>重置表单</el-button>
+          <el-button size='small' type="primary" @click="create('refName')" icon='el-icon-success'>保存/更新本地账号信息</el-button>
           <el-button size='small' type='danger' @click="remove" icon='el-icon-delete'>删除本地账号信息</el-button>
         </el-button-group>
       </el-form-item>
@@ -57,12 +51,10 @@
         },
         rules: {
           account: [
-            { required: true, message: '请输入手机号或邮箱', trigger: 'blur' },
-            { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+            { required: true, message: '请输入手机号或邮箱', trigger: 'blur' }
           ],
           password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+            { required: true, message: '请输入密码', trigger: 'blur' }
           ]
         }
       }
@@ -72,9 +64,9 @@
     },
     methods: {
       readDb () {
-        this.juejin = this.$db.getState().platforms.juejin
+        this.juejin = this.$db.read().get('platforms.juejin')
       },
-      async login (create) {
+      async login () {
         let loading = this.$loading({
           lock: true,
           text: '努力加载中...',
@@ -86,93 +78,59 @@
             phoneNumber: this.form.account,
             password: this.form.password
           })
-          if (create) {
-            const juejin = {
-              token: d.token,
-              userId: d.userId,
-              clientId: d.clientId
-            }
-            this.juejin = juejin
-            this.$db.set('platforms.juejin', juejin).write()
+          const juejin = {
+            token: d.token,
+            userId: d.userId,
+            clientId: d.clientId
           }
-          let notification = new this.$electron.remote.Notification({
-            title: create ? '创建结果' : '验证结果',
-            body: create ? '账号信息创建/更新成功！' : '账号信息正确'
+          this.juejin = juejin
+          this.$db.set('platforms.juejin', juejin).write()
+          this.$notify({
+            title: '提示',
+            message: '账号信息保存/更新成功!',
+            type: 'success'
           })
-          notification.show()
-          notification.onclick = () => {
-            notification.close()
-          }
         } catch (err) {
-          let notification
           const status = err.response.status
           if (status === 401) {
-            notification = new this.$electron.remote.Notification({
+            this.$notify({
               title: '信息有误',
-              body: '密码错误，请重新填写'
+              message: '密码错误，请重新填写!',
+              type: 'error'
             })
           } else if (status === 404) {
-            notification = new this.$electron.remote.Notification({
+            this.$notify({
               title: '信息有误',
-              body: '账号不存在，请重新填写'
+              message: '账号不存在，请重新填写!',
+              type: 'error'
             })
-          }
-          notification.show()
-          notification.onclick = () => {
-            notification.close()
           }
         }
         loading.close()
       },
-      validate (formName) {
+      create (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.login()
           } else {
-            let notification = new this.$electron.remote.Notification({
+            this.$notify({
               title: '提示',
-              body: '请填写必填选项'
+              message: '请填写必填选项',
+              type: 'info'
             })
-            notification.show()
-            notification.onclick = () => {
-              notification.close()
-            }
             return false
           }
         })
-      },
-      create (formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.login('create')
-          } else {
-            let notification = new this.$electron.remote.Notification({
-              title: '提示',
-              body: '请填写必填选项'
-            })
-            notification.show()
-            notification.onclick = () => {
-              notification.close()
-            }
-            return false
-          }
-        })
-      },
-      resetForm (formName) {
-        this.$refs[formName].resetFields()
       },
       remove () {
         const juejin = {}
         this.juejin = juejin
         this.$db.set('platforms.juejin', juejin).write()
-        let notification = new this.$electron.remote.Notification({
+        this.$notify({
           title: '删除提示',
-          body: '本地账号信息删除完成'
+          message: '本地账号信息删除完成',
+          type: 'success'
         })
-        notification.show()
-        notification.onclick = () => {
-          notification.close()
-        }
       }
     }
   }
