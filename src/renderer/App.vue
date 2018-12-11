@@ -9,11 +9,3 @@
     name: 'onekeygo'
   }
 </script>
-
-<style>
-  .formtitle {
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-</style>
