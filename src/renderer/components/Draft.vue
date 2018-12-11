@@ -1,7 +1,7 @@
 <template>
   <div id="draft">
-    <div class='formtitle'>{{$route.meta.label}}</div>
-    <el-card class="article" v-if='article.title || article.content'>
+    <setting-title plain></setting-title>
+    <el-card class="article" v-if='article.title || (article.content.md && article.content.html)'>
       <div slot="header">
         <span>{{article.title ? article.title : '无标题'}}</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click='$router.push({path: "edit"})'>编辑</el-button>
@@ -19,7 +19,11 @@
 </template>
 
 <script>
+  import SettingTitle from './SettingTitle'
   export default {
+    components: {
+      settingTitle: SettingTitle
+    },
     data () {
       return {
         article: {
@@ -36,7 +40,7 @@
     },
     methods: {
       getAbstract () {
-        let abstract = this.article.content.html.replace(/<br\/>/g, '').replace(/<[^>]+>/g, '').replace(/&#34;/g, '"')
+        let abstract = (this.article.content.html || '').replace(/<br\/>/g, '').replace(/<[^>]+>/g, '').replace(/&#34;/g, '"')
         return abstract.length >= 80 ? abstract.substr(0, 80) + '...' : (!abstract.length ? '无内容' : abstract)
       }
     }

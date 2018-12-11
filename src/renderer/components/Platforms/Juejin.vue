@@ -68,7 +68,7 @@
     },
     methods: {
       readDb () {
-        this.juejin = this.$db.read().get('platforms.juejin')
+        this.juejin = this.$db.read().get('platforms.juejin').value()
       },
       async login () {
         let loading = this.$loading({
