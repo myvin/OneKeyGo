@@ -17,7 +17,8 @@ export default {
       path: '/platforms/juejin',
       meta: {
         icon: 'el-icon-edit-outline',
-        label: '掘金'
+        label: '掘金',
+        webUrl: 'https://juejin.im'
       },
       component: Juejin
     },
@@ -35,7 +36,8 @@ export default {
       path: '/platforms/segmentFault',
       meta: {
         icon: 'el-icon-edit-outline',
-        label: 'SegmentFault'
+        label: 'SegmentFault',
+        webUrl: 'https://segmentfault.com/'
       },
       component: SegmentFault
     },

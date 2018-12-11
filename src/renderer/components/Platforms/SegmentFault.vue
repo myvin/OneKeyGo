@@ -1,6 +1,6 @@
 <template>
   <div id="segmentFault">
-    <div class='formtitle'>{{$route.meta.label}}平台设置</div>
+    <setting-title></setting-title>
     <el-form label-position='left' ref="form" :model="form" :rules='rules' label-width="7em" size='small'>
       <el-form-item label="账号" prop='account'>
         <el-input placeholder='请输入手机号或邮箱' v-model="form.account"></el-input>
@@ -60,8 +60,12 @@
 
 <script>
   import { getWriteToken, login, search } from '../../../utils/segmentFaultPublish'
+  import SettingTitle from '../SettingTitle'
 
   export default {
+    components: {
+      settingTitle: SettingTitle
+    },
     data () {
       return {
         tags: [],

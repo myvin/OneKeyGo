@@ -1,6 +1,6 @@
 <template>
   <div id="juejin">
-    <div class='formtitle'>{{$route.meta.label}}平台设置</div>
+    <setting-title></setting-title>
     <el-form label-position='left' ref="refName" :model="form" :rules='rules' label-width="5em" size='small'>
       <el-form-item label="账号" prop='account'>
         <el-input placeholder='请输入手机号或邮箱' v-model="form.account"></el-input>
@@ -41,7 +41,11 @@
 
 <script>
   import { login } from '../../../utils/juejinPublish'
+  import SettingTitle from '../SettingTitle'
   export default {
+    components: {
+      settingTitle: SettingTitle
+    },
     data () {
       return {
         juejin: {},
